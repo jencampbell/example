@@ -1,7 +1,5 @@
 # My Website
 
-Hello! This is an example GitHub Pages site.
+My name is Jennifer Campbell
 
-## Project 1
-
-About my project...
+Welcome to my demo site!
