@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Science Fundamentals — Interactive Demo</title>
+  <meta name="description" content="An interactive GitHub Pages demo covering core data science concepts for second-year students." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- Chart.js via CDN (no build step needed) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ===== Navigation ===== -->
+<nav>
+  <div class="container nav-inner">
+    <a class="nav-brand" href="#">📊 DS Fundamentals</a>
+    <div class="nav-links">
+      <a href="#distributions">Distributions</a>
+      <a href="#regression">Regression</a>
+      <a href="#correlation">Correlation</a>
+      <a href="#workflow">Workflow</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-badge">Second Year · Data Science</div>
+    <h1>Explore Data Science<br /><span>Interactively</span></h1>
+    <p>Hands-on visualisations of the core statistical and machine-learning concepts you will use every day as a data scientist.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#distributions">Start Exploring ↓</a>
+      <a class="btn btn-outline" href="https://github.com/jencampbell/example" target="_blank" rel="noopener">View Source ↗</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== 1. Probability Distributions ===== -->
+<section id="distributions">
+  <div class="container">
+    <div class="section-header">
+      <h2>1 · Probability Distributions</h2>
+      <p>Adjust the sliders to see how <strong>mean</strong> and <strong>standard deviation</strong> change the shape of a Normal distribution — one of the most important concepts in statistics.</p>
+    </div>
+
+    <div class="grid grid-2">
+
+      <!-- Normal Distribution -->
+      <div class="card">
+        <h3>Normal (Gaussian) Distribution</h3>
+        <p>The bell curve. Used to model measurement errors, heights, exam scores and much more.</p>
+
+        <div class="controls mt-2">
+          <div class="control-group">
+            <label>Mean (μ): <span id="mean-val">0</span></label>
+            <input id="mean-slider" type="range" min="-3" max="3" step="0.1" value="0" />
+          </div>
+          <div class="control-group">
+            <label>Std Dev (σ): <span id="std-val">1</span></label>
+            <input id="std-slider" type="range" min="0.3" max="3" step="0.1" value="1" />
+          </div>
+        </div>
+
+        <div class="chart-wrap"><canvas id="normalChart"></canvas></div>
+
+        <div class="stat-grid">
+          <div class="stat-item"><div class="val" id="norm-mean">0.00</div><div class="lbl">Mean</div></div>
+          <div class="stat-item"><div class="val" id="norm-std">1.00</div><div class="lbl">Std Dev</div></div>
+          <div class="stat-item"><div class="val" id="norm-var">1.00</div><div class="lbl">Variance</div></div>
+        </div>
+
+        <div class="info-box">
+          <strong>68-95-99.7 rule:</strong> ~68 % of data lies within 1σ of the mean, ~95 % within 2σ, and ~99.7 % within 3σ.
+        </div>
+      </div>
+
+      <!-- Distribution comparison -->
+      <div class="card">
+        <h3>Distribution Families</h3>
+        <p>Compare how different probability distributions look. Each has different use-cases in data science.</p>
+
+        <div class="controls mt-2">
+          <div class="control-group">
+            <label>Distribution</label>
+            <select id="dist-select">
+              <option value="normal">Normal</option>
+              <option value="uniform">Uniform</option>
+              <option value="exponential">Exponential (λ = 1)</option>
+              <option value="bimodal">Bimodal</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label>Sample size (n): <span id="n-val">200</span></label>
+            <input id="n-slider" type="range" min="50" max="2000" step="50" value="200" />
+          </div>
+        </div>
+
+        <div class="chart-wrap"><canvas id="histChart"></canvas></div>
+
+        <div class="concept-list">
+          <span class="chip">PDF</span>
+          <span class="chip">Histogram</span>
+          <span class="chip">Sampling</span>
+          <span class="chip">Central Limit Theorem</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2. Linear Regression ===== -->
+<section id="regression">
+  <div class="container">
+    <div class="section-header">
+      <h2>2 · Linear Regression</h2>
+      <p>Linear regression fits a straight line through data. Adjust the noise and sample size to see how the <strong>least-squares line</strong> reacts.</p>
+    </div>
+
+    <div class="grid grid-2">
+
+      <div class="card">
+        <h3>Interactive Scatter Plot</h3>
+        <p>The blue line is the ordinary least-squares (OLS) regression line fitted to the data.</p>
+
+        <div class="controls mt-2">
+          <div class="control-group">
+            <label>Noise level: <span id="noise-val">0.5</span></label>
+            <input id="noise-slider" type="range" min="0" max="3" step="0.1" value="0.5" />
+          </div>
+          <div class="control-group">
+            <label>Points (n): <span id="pts-val">50</span></label>
+            <input id="pts-slider" type="range" min="10" max="300" step="10" value="50" />
+          </div>
+          <div class="control-group">
+            <label>True slope: <span id="slope-val">1.0</span></label>
+            <input id="slope-slider" type="range" min="-3" max="3" step="0.1" value="1" />
+          </div>
+        </div>
+
+        <div class="chart-wrap"><canvas id="regrChart"></canvas></div>
+
+        <div class="stat-grid">
+          <div class="stat-item"><div class="val" id="reg-slope">—</div><div class="lbl">OLS Slope</div></div>
+          <div class="stat-item"><div class="val" id="reg-intercept">—</div><div class="lbl">Intercept</div></div>
+          <div class="stat-item"><div class="val" id="reg-r2">—</div><div class="lbl">R²</div></div>
+          <div class="stat-item"><div class="val" id="reg-rmse">—</div><div class="lbl">RMSE</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Residual Plot</h3>
+        <p>Residuals are the vertical distances between each data point and the fitted line. Random scatter = good fit. Patterns = a problem.</p>
+        <div class="chart-wrap"><canvas id="residChart"></canvas></div>
+        <div class="info-box">
+          <strong>What to look for:</strong> Residuals should be randomly scattered around zero with no fan-shape (homoscedasticity) and no curves (linearity assumption).
+        </div>
+        <div class="concept-list">
+          <span class="chip">OLS</span>
+          <span class="chip">R²</span>
+          <span class="chip">RMSE</span>
+          <span class="chip">Residuals</span>
+          <span class="chip">Homoscedasticity</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. Correlation ===== -->
+<section id="correlation">
+  <div class="container">
+    <div class="section-header">
+      <h2>3 · Correlation &amp; Causation</h2>
+      <p>Pearson's <em>r</em> measures the linear relationship between two variables. Drag the slider from −1 to +1 to see how the scatter plot changes.</p>
+    </div>
+
+    <div class="grid grid-2">
+
+      <div class="card">
+        <h3>Pearson Correlation</h3>
+        <p>Adjust the target correlation to generate bivariate data and see Pearson's <em>r</em> in action.</p>
+
+        <div class="controls mt-2">
+          <div class="control-group">
+            <label>Target r: <span id="corr-val">0.70</span></label>
+            <input id="corr-slider" type="range" min="-1" max="1" step="0.05" value="0.7" />
+          </div>
+          <div class="control-group">
+            <label>n: <span id="corr-n-val">80</span></label>
+            <input id="corr-n-slider" type="range" min="20" max="500" step="10" value="80" />
+          </div>
+        </div>
+
+        <div class="chart-wrap"><canvas id="corrChart"></canvas></div>
+
+        <div class="stat-grid">
+          <div class="stat-item"><div class="val" id="corr-r">—</div><div class="lbl">Measured r</div></div>
+          <div class="stat-item"><div class="val" id="corr-r2">—</div><div class="lbl">r²</div></div>
+          <div class="stat-item"><div class="val" id="corr-interp">—</div><div class="lbl">Strength</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Key Takeaways</h3>
+        <p>Understanding correlation is essential before building any predictive model.</p>
+        <div class="steps mt-2">
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-body">
+              <h3>r = +1 is a perfect positive relationship</h3>
+              <p>As X increases, Y increases proportionally. E.g. hours studied vs. exam score.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-body">
+              <h3>r = 0 means no linear relationship</h3>
+              <p>The variables may still have a non-linear relationship — always plot your data!</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-body">
+              <h3>Correlation ≠ Causation</h3>
+              <p>Two variables can be correlated due to a third confounding variable. Establishing causation requires experiments or causal inference methods.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num"></div>
+            <div class="step-body">
+              <h3>Small n → noisy estimates</h3>
+              <p>With only 20 points, measured r can differ greatly from the true population r. Increase n to see estimates stabilise.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. Data Science Workflow ===== -->
+<section id="workflow">
+  <div class="container">
+    <div class="section-header">
+      <h2>4 · The Data Science Workflow</h2>
+      <p>Every data science project follows a similar lifecycle. Understanding this workflow helps you stay organised and produce reproducible results.</p>
+    </div>
+
+    <div class="grid grid-3">
+      <div class="card">
+        <h3>1 · Define the Problem</h3>
+        <p>Translate a business or research question into a concrete, measurable goal. What variable are you predicting? What counts as success?</p>
+        <div class="concept-list mt-2">
+          <span class="chip">KPIs</span>
+          <span class="chip">Metrics</span>
+          <span class="chip">Stakeholders</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>2 · Collect &amp; Clean Data</h3>
+        <p>Real-world data is messy. You will spend 60–80 % of project time on data wrangling: handling missing values, outliers, and type errors.</p>
+        <div class="concept-list mt-2">
+          <span class="chip">EDA</span>
+          <span class="chip">Missing values</span>
+          <span class="chip">Outliers</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>3 · Explore &amp; Visualise</h3>
+        <p>Plot distributions, correlations, and time trends before modelling. Visualisation reveals patterns that summary statistics hide.</p>
+        <div class="concept-list mt-2">
+          <span class="chip">Histograms</span>
+          <span class="chip">Scatter plots</span>
+          <span class="chip">Box plots</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>4 · Feature Engineering</h3>
+        <p>Transform raw variables into informative inputs for your model: encoding categoricals, scaling numerics, creating interaction terms.</p>
+        <div class="concept-list mt-2">
+          <span class="chip">Normalisation</span>
+          <span class="chip">One-hot encoding</span>
+          <span class="chip">PCA</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>5 · Model &amp; Evaluate</h3>
+        <p>Train a model, tune hyperparameters, and rigorously evaluate on held-out data. Always use cross-validation to avoid overfitting.</p>
+        <div class="concept-list mt-2">
+          <span class="chip">Train/Test split</span>
+          <span class="chip">Cross-validation</span>
+          <span class="chip">Bias–Variance</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>6 · Communicate Results</h3>
+        <p>A model no one understands will never be used. Visualise predictions, quantify uncertainty, and tell a clear story with your findings.</p>
+        <div class="concept-list mt-2">
+          <span class="chip">Storytelling</span>
+          <span class="chip">Uncertainty</span>
+          <span class="chip">Reproducibility</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer>
+  <div class="container">
+    <p>Built with <a href="https://pages.github.com/" style="color:var(--color-accent)">GitHub Pages</a> · 
+       Charts by <a href="https://www.chartjs.org/" style="color:var(--color-accent)">Chart.js</a> · 
+       <a href="https://github.com/jencampbell/example" style="color:var(--color-accent)">View on GitHub ↗</a></p>
+    <p class="mt-1">Data Science Fundamentals — Second Year Demo</p>
+  </div>
+</footer>
+
+<script>
+/* ========================================================
+   Helpers
+   ======================================================== */
+function randn() {
+  // Box-Muller transform
+  let u, v;
+  do { u = Math.random(); } while (u === 0);
+  do { v = Math.random(); } while (v === 0);
+  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+
+function normalPDF(x, mu, sigma) {
+  return (1 / (sigma * Math.sqrt(2 * Math.PI))) *
+         Math.exp(-0.5 * ((x - mu) / sigma) ** 2);
+}
+
+function linspace(start, end, n) {
+  const arr = [];
+  const step = (end - start) / (n - 1);
+  for (let i = 0; i < n; i++) arr.push(start + i * step);
+  return arr;
+}
+
+function mean(arr) { return arr.reduce((a, b) => a + b, 0) / arr.length; }
+function variance(arr) {
+  const m = mean(arr);
+  return arr.reduce((s, x) => s + (x - m) ** 2, 0) / arr.length;
+}
+function std(arr) { return Math.sqrt(variance(arr)); }
+
+function pearsonR(xs, ys) {
+  const mx = mean(xs), my = mean(ys);
+  const num = xs.reduce((s, x, i) => s + (x - mx) * (ys[i] - my), 0);
+  const den = Math.sqrt(xs.reduce((s, x) => s + (x - mx) ** 2, 0) *
+                        ys.reduce((s, y) => s + (y - my) ** 2, 0));
+  return den === 0 ? 0 : num / den;
+}
+
+function olsFit(xs, ys) {
+  const mx = mean(xs), my = mean(ys);
+  const num = xs.reduce((s, x, i) => s + (x - mx) * (ys[i] - my), 0);
+  const den = xs.reduce((s, x) => s + (x - mx) ** 2, 0);
+  const slope = den === 0 ? 0 : num / den;
+  const intercept = my - slope * mx;
+  return { slope, intercept };
+}
+
+function r2(ys, yHat) {
+  const my = mean(ys);
+  const ssTot = ys.reduce((s, y) => s + (y - my) ** 2, 0);
+  const ssRes = ys.reduce((s, y, i) => s + (y - yHat[i]) ** 2, 0);
+  return 1 - ssRes / ssTot;
+}
+
+function rmse(ys, yHat) {
+  return Math.sqrt(ys.reduce((s, y, i) => s + (y - yHat[i]) ** 2, 0) / ys.length);
+}
+
+function correlatedSample(n, rho) {
+  const xs = [], ys = [];
+  for (let i = 0; i < n; i++) {
+    const x = randn();
+    const y = rho * x + Math.sqrt(1 - rho * rho) * randn();
+    xs.push(x); ys.push(y);
+  }
+  return { xs, ys };
+}
+
+function corrStrength(r) {
+  const a = Math.abs(r);
+  if (a >= 0.9) return 'Very strong';
+  if (a >= 0.7) return 'Strong';
+  if (a >= 0.5) return 'Moderate';
+  if (a >= 0.3) return 'Weak';
+  return 'Very weak';
+}
+
+function sample(dist, n) {
+  const data = [];
+  for (let i = 0; i < n; i++) {
+    if (dist === 'normal')      data.push(randn());
+    else if (dist === 'uniform') data.push(Math.random() * 6 - 3);
+    else if (dist === 'exponential') data.push(-Math.log(Math.random()));
+    else if (dist === 'bimodal') data.push(Math.random() < 0.5 ? randn() - 2 : randn() + 2);
+  }
+  return data;
+}
+
+function histogram(data, bins = 30) {
+  const lo = Math.min(...data), hi = Math.max(...data);
+  const step = (hi - lo) / bins;
+  const counts = Array(bins).fill(0);
+  const labels = Array.from({ length: bins }, (_, i) => (lo + (i + 0.5) * step).toFixed(2));
+  data.forEach(v => {
+    const idx = Math.min(Math.floor((v - lo) / step), bins - 1);
+    counts[idx]++;
+  });
+  return { labels, counts };
+}
+
+const ACCENT  = 'rgba(56, 189, 248, 0.85)';
+const ACCENT2 = 'rgba(129, 140, 248, 0.85)';
+const GREEN   = 'rgba(52, 211, 153, 0.85)';
+const RED     = 'rgba(248, 113, 113, 0.7)';
+
+const CHART_DEFAULTS = {
+  responsive: true,
+  maintainAspectRatio: false,
+  animation: { duration: 200 },
+  plugins: { legend: { display: false } },
+  scales: {
+    x: { ticks: { color: '#94a3b8', maxTicksLimit: 8 }, grid: { color: '#334155' } },
+    y: { ticks: { color: '#94a3b8', maxTicksLimit: 6 }, grid: { color: '#334155' } },
+  },
+};
+
+/* ========================================================
+   1. Normal Distribution Chart
+   ======================================================== */
+const normalCtx = document.getElementById('normalChart').getContext('2d');
+let normalChart;
+
+function buildNormalChart(mu, sigma) {
+  const xs = linspace(mu - 4 * sigma, mu + 4 * sigma, 200);
+  const ys = xs.map(x => normalPDF(x, mu, sigma));
+
+  const data = {
+    labels: xs.map(x => x.toFixed(2)),
+    datasets: [{
+      label: 'PDF',
+      data: ys,
+      borderColor: ACCENT,
+      backgroundColor: 'rgba(56,189,248,0.12)',
+      fill: true,
+      tension: 0.4,
+      pointRadius: 0,
+      borderWidth: 2,
+    }],
+  };
+
+  if (normalChart) {
+    normalChart.data = data;
+    normalChart.update();
+  } else {
+    normalChart = new Chart(normalCtx, { type: 'line', data, options: { ...CHART_DEFAULTS } });
+  }
+  document.getElementById('norm-mean').textContent = mu.toFixed(2);
+  document.getElementById('norm-std').textContent  = sigma.toFixed(2);
+  document.getElementById('norm-var').textContent  = (sigma ** 2).toFixed(2);
+}
+
+const meanSlider = document.getElementById('mean-slider');
+const stdSlider  = document.getElementById('std-slider');
+meanSlider.addEventListener('input', () => {
+  document.getElementById('mean-val').textContent = meanSlider.value;
+  buildNormalChart(+meanSlider.value, +stdSlider.value);
+});
+stdSlider.addEventListener('input', () => {
+  document.getElementById('std-val').textContent = stdSlider.value;
+  buildNormalChart(+meanSlider.value, +stdSlider.value);
+});
+buildNormalChart(0, 1);
+
+/* ========================================================
+   2. Histogram / Distribution Comparison
+   ======================================================== */
+const histCtx = document.getElementById('histChart').getContext('2d');
+let histChart;
+
+function buildHistChart(dist, n) {
+  const data = sample(dist, n);
+  const { labels, counts } = histogram(data, 25);
+
+  const chartData = {
+    labels,
+    datasets: [{
+      label: dist,
+      data: counts,
+      backgroundColor: ACCENT2,
+      borderColor: 'transparent',
+      borderRadius: 3,
+    }],
+  };
+
+  if (histChart) {
+    histChart.data = chartData;
+    histChart.update();
+  } else {
+    histChart = new Chart(histCtx, {
+      type: 'bar',
+      data: chartData,
+      options: { ...CHART_DEFAULTS, scales: { ...CHART_DEFAULTS.scales, x: { ...CHART_DEFAULTS.scales.x, ticks: { color: '#94a3b8', maxTicksLimit: 6 } } } },
+    });
+  }
+}
+
+const distSelect = document.getElementById('dist-select');
+const nSlider    = document.getElementById('n-slider');
+distSelect.addEventListener('change', () => buildHistChart(distSelect.value, +nSlider.value));
+nSlider.addEventListener('input', () => {
+  document.getElementById('n-val').textContent = nSlider.value;
+  buildHistChart(distSelect.value, +nSlider.value);
+});
+buildHistChart('normal', 200);
+
+/* ========================================================
+   3. Regression
+   ======================================================== */
+const regrCtx   = document.getElementById('regrChart').getContext('2d');
+const residCtx  = document.getElementById('residChart').getContext('2d');
+let regrChart, residChart;
+
+function buildRegrCharts(noise, n, trueSlope) {
+  const xs = linspace(-3, 3, n).map(x => x + (Math.random() - 0.5) * 0.2);
+  const ys = xs.map(x => trueSlope * x + 0.5 + noise * randn());
+
+  const { slope, intercept } = olsFit(xs, ys);
+  const yHat = xs.map(x => slope * x + intercept);
+  const residuals = ys.map((y, i) => y - yHat[i]);
+
+  const r2val   = r2(ys, yHat);
+  const rmseVal = rmse(ys, yHat);
+
+  document.getElementById('reg-slope').textContent     = slope.toFixed(3);
+  document.getElementById('reg-intercept').textContent = intercept.toFixed(3);
+  document.getElementById('reg-r2').textContent        = r2val.toFixed(3);
+  document.getElementById('reg-rmse').textContent      = rmseVal.toFixed(3);
+
+  // Scatter + regression line
+  const xFit = [-3.5, 3.5];
+  const yFit = xFit.map(x => slope * x + intercept);
+
+  const scatterData = {
+    datasets: [
+      {
+        label: 'Data',
+        data: xs.map((x, i) => ({ x, y: ys[i] })),
+        backgroundColor: 'rgba(129,140,248,0.5)',
+        pointRadius: 4,
+        type: 'scatter',
+      },
+      {
+        label: 'OLS fit',
+        data: xFit.map((x, i) => ({ x, y: yFit[i] })),
+        borderColor: ACCENT,
+        borderWidth: 2.5,
+        pointRadius: 0,
+        tension: 0,
+        type: 'line',
+        fill: false,
+      },
+    ],
+  };
+
+  if (regrChart) {
+    regrChart.data = scatterData;
+    regrChart.update();
+  } else {
+    regrChart = new Chart(regrCtx, {
+      type: 'scatter',
+      data: scatterData,
+      options: { ...CHART_DEFAULTS, plugins: { legend: { display: true, labels: { color: '#94a3b8' } } } },
+    });
+  }
+
+  // Residual plot
+  const residData = {
+    datasets: [{
+      label: 'Residuals',
+      data: xs.map((x, i) => ({ x, y: residuals[i] })),
+      backgroundColor: residuals.map(r => r >= 0 ? 'rgba(52,211,153,0.5)' : 'rgba(248,113,113,0.5)'),
+      pointRadius: 4,
+    }],
+  };
+
+  if (residChart) {
+    residChart.data = residData;
+    residChart.update();
+  } else {
+    residChart = new Chart(residCtx, {
+      type: 'scatter',
+      data: residData,
+      options: { ...CHART_DEFAULTS },
+    });
+  }
+}
+
+const noiseSlider = document.getElementById('noise-slider');
+const ptsSlider   = document.getElementById('pts-slider');
+const slopeSlider = document.getElementById('slope-slider');
+
+function onRegrChange() {
+  document.getElementById('noise-val').textContent = noiseSlider.value;
+  document.getElementById('pts-val').textContent   = ptsSlider.value;
+  document.getElementById('slope-val').textContent = slopeSlider.value;
+  buildRegrCharts(+noiseSlider.value, +ptsSlider.value, +slopeSlider.value);
+}
+noiseSlider.addEventListener('input', onRegrChange);
+ptsSlider.addEventListener('input', onRegrChange);
+slopeSlider.addEventListener('input', onRegrChange);
+buildRegrCharts(0.5, 50, 1.0);
+
+/* ========================================================
+   4. Correlation
+   ======================================================== */
+const corrCtx = document.getElementById('corrChart').getContext('2d');
+let corrChart;
+
+function buildCorrChart(rho, n) {
+  const { xs, ys } = correlatedSample(n, rho);
+  const r = pearsonR(xs, ys);
+
+  document.getElementById('corr-r').textContent     = r.toFixed(3);
+  document.getElementById('corr-r2').textContent    = (r ** 2).toFixed(3);
+  document.getElementById('corr-interp').textContent = corrStrength(r);
+
+  const color = r >= 0 ? 'rgba(56,189,248,0.45)' : 'rgba(248,113,113,0.45)';
+
+  const data = {
+    datasets: [{
+      label: 'Samples',
+      data: xs.map((x, i) => ({ x, y: ys[i] })),
+      backgroundColor: color,
+      pointRadius: Math.max(2, 6 - n / 100),
+    }],
+  };
+
+  if (corrChart) {
+    corrChart.data = data;
+    corrChart.update();
+  } else {
+    corrChart = new Chart(corrCtx, { type: 'scatter', data, options: { ...CHART_DEFAULTS } });
+  }
+}
+
+const corrSlider  = document.getElementById('corr-slider');
+const corrNSlider = document.getElementById('corr-n-slider');
+
+function onCorrChange() {
+  document.getElementById('corr-val').textContent   = corrSlider.value;
+  document.getElementById('corr-n-val').textContent = corrNSlider.value;
+  buildCorrChart(+corrSlider.value, +corrNSlider.value);
+}
+corrSlider.addEventListener('input', onCorrChange);
+corrNSlider.addEventListener('input', onCorrChange);
+buildCorrChart(0.7, 80);
+</script>
+</body>
+</html>
